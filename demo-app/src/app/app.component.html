@@ -1,10 +1,25 @@
-<div class="header" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-  <img fxFlex src="assets/logo-molio.png" height="40px" />
-  <img fxFlex src="assets/logo-niras.svg" height="40px" />
+<div class="header" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start end">
+  <img src="assets/logo-BS-small.svg" height="40px" />
+  <img src="assets/logo-molio.png" height="40px" />
+  <img src="assets/logo-niras.svg" height="52px" style="padding-bottom: 12px;" />
 </div>
 
 <mat-card class="container">
 
-  <app-ifc-to-lbd></app-ifc-to-lbd>
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+
+    <!-- STEP 1 -->
+    <mat-step>
+      <ng-template matStepLabel>Upload IFC-fil</ng-template>
+      <app-ifc-to-lbd></app-ifc-to-lbd>
+    </mat-step>
+
+    <!-- STEP 2 -->
+    <mat-step>
+      <ng-template matStepLabel>STEP 2</ng-template>
+      <p>Hvad skal der ske her?</p>
+    </mat-step>
+
+  </mat-horizontal-stepper>
 
 </mat-card>
