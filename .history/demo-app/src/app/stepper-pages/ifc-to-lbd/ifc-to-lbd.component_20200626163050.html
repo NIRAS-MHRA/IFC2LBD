@@ -1,0 +1,11 @@
+<!-- Server error -->
+<p class="error" *ngIf="!serverAvailable">Kunne ikke oprette forbindelse til den server som konverterer IFC-filen. Kontakt support!</p>
+
+<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        Smid IFC-fil her
+        <!-- <button type="button" (click)="openFileSelector()">Browse Files</button> -->
+    </ng-template>
+</ngx-file-drop>
+
+<p *ngIf="fileLoadResult">{{fileLoadResult}}</p>

@@ -1,0 +1,23 @@
+<div class="header" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start end">
+  <img src="assets/logo-BS-small.svg" height="40px" />
+  <img src="assets/logo-molio.png" height="40px" />
+  <img src="assets/logo-niras.svg" height="52px" style="padding-bottom: 12px;" />
+</div>
+
+<mat-card class="container">
+
+  <mat-horizontal-stepper linear="true" #stepper>
+
+    <!-- STEP 1 -->
+    <mat-step>
+      <app-ifc-to-lbd></app-ifc-to-lbd>
+    </mat-step>
+
+    <!-- STEP 2 -->
+    <mat-step>
+      <app-ifc-to-lbd></app-ifc-to-lbd>
+    </mat-step>
+
+  </mat-horizontal-stepper>
+
+</mat-card>

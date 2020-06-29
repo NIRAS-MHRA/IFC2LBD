@@ -9,7 +9,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "deploy": "ng deploy --base-href=/IFC2LBD/",
+    "deploy": "ng deploy --repo=https://github.com/NIRAS-MHRA/IFC2LBD.git",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
