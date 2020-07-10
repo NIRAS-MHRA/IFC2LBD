@@ -3,6 +3,10 @@ import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 
 
 import { IFCService } from 'src/app/services/ifc.service';
 
+import 'codemirror/mode/turtle/turtle';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/sparql/sparql';
+
 @Component({
   selector: 'app-ifc-to-lbd',
   templateUrl: './ifc-to-lbd.component.html',
@@ -11,11 +15,21 @@ import { IFCService } from 'src/app/services/ifc.service';
 })
 export class IfcToLbdComponent implements OnInit {
 
-  public serverAvailable: boolean = false;
+  public serverAvailable: boolean = undefined;
 
   // File drop
-  public fileLoadResult: string;
+  public fileLoadStatus: string;
   public fileLoadError: string;
+  public fileLoadResult: string;
+
+  // Codemirror
+  public cmConfig = { 
+      lineNumbers: true,
+      firstLineNumber: 1,
+      lineWrapping: true,
+      matchBrackets: true,
+      mode: 'text/turtle'
+  };
 
   constructor(
     private _ifcService: IFCService
@@ -40,7 +54,7 @@ export class IfcToLbdComponent implements OnInit {
   // Fires when a file is dropped
   public dropped(files: NgxFileDropEntry[]) {
 
-    this.fileLoadResult = null;
+    this.fileLoadStatus = null;
     this.fileLoadError = null;
 
     if(files.length != 1){
@@ -55,11 +69,12 @@ export class IfcToLbdComponent implements OnInit {
     // Is it a file?
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      console.log(fileEntry);
       fileEntry.file((file: File) => {
 
           // Evaluate size
           const size = Math.round(file.size/1000000);
-          this.fileLoadResult = `Loadede filen på ${size} mb --> udtrækker indhold`;
+          this.fileLoadStatus = `Loadede filen på ${size} mb --> udtrækker indhold`;
 
           // Only process IFC files
           const fileName = file.name;
@@ -79,14 +94,17 @@ export class IfcToLbdComponent implements OnInit {
       }
   }
 
-  public readFile(file: File, fileName) {
+  public async readFile(file: File, fileName) {
 
-    console.log(`Sending ${fileName} to server...`);
+    this.fileLoadStatus += `<br>Sender filen til server...`;
 
     try{
-      const res = this._ifcService.convertIFC(file);
+      // await this._ifcService.convertIFC(fileName, file);
+      this.fileLoadResult = await this._ifcService.convertIFCString(fileName, file);
+      this.fileLoadStatus += `<br>Konvertering lykkedes!`;
     }catch(error){
       console.log(error);
+      this.fileLoadError = `Der skete en fejl på serveren`;
     }
 
   }

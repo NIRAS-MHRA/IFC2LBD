@@ -1,11 +1,26 @@
-<!-- Server error -->
-<p class="error" *ngIf="!serverAvailable">Kunne ikke oprette forbindelse til den server som konverterer IFC-filen. Kontakt support!</p>
+<div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
-<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
-    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-        <span *ngIf="!fileLoadResult && !fileLoadError">Smid IFC-fil her</span>
-        <span *ngIf="fileLoadResult && !fileLoadError">{{fileLoadResult}}</span>
-        <span class="error" *ngIf="fileLoadError">{{fileLoadError}}</span>
-        <!-- <button type="button" (click)="openFileSelector()">Browse Files</button> -->
-    </ng-template>
-</ngx-file-drop>
+    <!-- Server status -->
+    <div fxFlex>
+        <p class="error" *ngIf="serverAvailable === false">Kunne ikke oprette forbindelse til den server som konverterer IFC-filen. Kontakt support!</p>
+        <p class="success" *ngIf="serverAvailable === true">Server er tilgængelig</p>
+        <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
+    </div>
+
+    <div fxFlex>
+        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                <span *ngIf="!fileLoadStatus && !fileLoadError">Smid IFC-fil her</span>
+                <span *ngIf="fileLoadStatus && !fileLoadError" [innerHTML]="fileLoadStatus"></span>
+                <span class="error" *ngIf="fileLoadError">{{fileLoadError}}</span>
+                <!-- <button type="button" (click)="openFileSelector()">Browse Files</button> -->
+            </ng-template>
+        </ngx-file-drop>
+    </div>
+
+    <!-- Codemirror -->
+    <div fxFlex  *ngIf="fileLoadResult">
+        <codemirror [(ngModel)]="fileLoadResult"  [config]="cmConfig" class="full-width"></codemirror>
+    </div>
+
+</div>
