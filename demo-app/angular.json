@@ -13,6 +13,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "ng2-codemirror",
+              "codemirror/mode/turtle/turtle",
+              "codemirror/mode/javascript/javascript",
+              "codemirror/mode/sparql/sparql",
+              "hylar",
+              "file-saver",
+              "url-join",
+              "chalk",
+              "chalk-rainbow",
+              "util"
+            ],
             "outputPath": "dist/demo-app",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -28,7 +40,8 @@
               "src/styles.css",
               "./node_modules/codemirror/lib/codemirror.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {

@@ -12,3 +12,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .success{
     color: rgb(0, 114, 0);
 }
+
+
+code{
+    font-family: consolas;
+    background-color: rgba(240, 240, 240, 0.5);
+    border-radius: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+codemirror{
+    border: rgba(240, 240, 240, 0.1);
+}

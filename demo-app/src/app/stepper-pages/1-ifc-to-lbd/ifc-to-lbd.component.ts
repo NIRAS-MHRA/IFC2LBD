@@ -99,8 +99,7 @@ export class IfcToLbdComponent implements OnInit {
     this.fileLoadStatus += `<br>Sender filen til server...`;
 
     try{
-      // await this._ifcService.convertIFC(fileName, file);
-      this.fileLoadResult = await this._ifcService.convertIFCString(fileName, file);
+      await this._ifcService.convertIFC(fileName, file);
       this.fileLoadStatus += `<br>Konvertering lykkedes!`;
     }catch(error){
       console.log(error);

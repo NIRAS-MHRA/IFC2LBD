@@ -1,7 +1,9 @@
-.header{
+/* .header{
     margin: 1vw 10vw 1vw 10vw;
-}
+} */
 .container{
-    margin: 1vw 10vw 1vw 10vw;
+    max-width: 800px;
+}
+mat-card{
     padding: 30px;
 }

@@ -1,5 +1,16 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
+    <p>Første step er at konvertere en IFC-fil over til såkaldte <i>triples</i> i <a href="https://www.w3.org/TR/rdf11-primer/">Resource Description Format (RDF)</a>.</p>
+    
+    <p>En <i>triple</i> kaldes også en <i>erklæring</i> og består af et <i>subjekt</i>, et <i>prædikat</i> og et <i>objekt</i>. Subjektet er den ting, som erklæringen omhandler. 
+        Prædikatet beskriver den relation eller egenskab som skal beskrives for subjektet, og objektet er værdien af relationen/egenskaben.<br>
+        Eksempelvis <code>&lt;x&gt; &lt;type&gt; &lt;Rum&gt;</code>, som beskriver at <code>&lt;x&gt;</code> er af typen <code>&lt;Rum&gt;</code>.<br>
+        Der kan knyttes flere prædikater til det samme subjekt. For eksempel kan vi med <code>&lt;x&gt; &lt;nummer&gt; "25"</code> beskrive at <code>&lt;x&gt;</code> har nummer 25.<br>
+        Efterhånden som vi definerer flere erklæringer får vi et helt netværk af informationer i hvad vi kalder en "knowledge graph"
+    </p>
+
+    <p>Der benyttes en forsimplet konvertering af </p>
+
     <!-- Server status -->
     <div fxFlex>
         <p class="error" *ngIf="serverAvailable === false">Kunne ikke oprette forbindelse til den server som konverterer IFC-filen. Kontakt support!</p>

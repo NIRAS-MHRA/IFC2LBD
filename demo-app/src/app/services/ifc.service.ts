@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { FileSaverService } from 'ngx-filesaver';
+import { saveAs } from 'file-saver';
 
 import * as urljoin from 'url-join';
 
@@ -11,25 +11,13 @@ import * as urljoin from 'url-join';
 export class IFCService {
 
   constructor(
-    private _http: HttpClient,
-    private _FileSaverService: FileSaverService
+    private _http: HttpClient
   ) { }
 
   // Ping to check that the service is alive
   ping(): Promise<any>{
-    const url = environment.backendURL;
+    const url = environment.ifcParseEndpoint;
     return this._http.get(url).toPromise();
-  }
-
-  convertIFCString(name: string, file: File): Promise<string>{
-
-    let formData = new FormData();
-    formData.append('file', file, name);
-
-    const url = urljoin(environment.backendURL, 'transform');
-
-    return this._http.post(url, formData, {responseType: 'text'}).toPromise();
-
   }
 
   async convertIFC(name: string, file: File): Promise<void>{
@@ -39,12 +27,10 @@ export class IFCService {
     let formData = new FormData();
     formData.append('file', file, name);
 
-    const url = urljoin(environment.backendURL, 'transform');
+    const url = urljoin(environment.ifcParseEndpoint, 'transform');
 
-    const blob = await this._http.post(url, formData, { responseType: 'blob' }).toPromise()
-    this._FileSaverService.save((<any>blob)._body, fileName);
-    
-    return;
+    const blob = await this._http.post(url, formData, { responseType: 'blob' }).toPromise();
+    saveAs(blob, fileName);
 
   }
 

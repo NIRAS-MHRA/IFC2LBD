@@ -1,0 +1,105 @@
+<div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
+
+    <!-- Intro -->
+    <p>Step nummer to er at mætte datamodellen. Vi har en datamodel der er klassificeret med IFC, men vi ønsker at kunne lave forespørgsler på den med <a href="https://molio.dk/produkter/digitale-vaerktojer/gratis-vaerktojer/ccs-cuneco-classification-system/">Cuneco Classification System (CSS)</a>.
+        Heldigvis findes CCS som en ontologi der er aligned med IFC.
+    </p>
+
+    <mat-vertical-stepper linear="true" #stepper>
+
+        <!-- STEP 1 -->
+        <mat-step>
+            <ng-template matStepLabel>Definer model-triples</ng-template>
+
+            <p>Model-triples er de triples der blev genereret ud fra IFC-filen.
+                Zip-filen indeholder en fil for hver IFC-klasse i modellen (eksempelvis IfcDoor),
+                og hver af disse filer indeholder erklæringer om de instanser fra modellen der tilhører denne klasse.
+                Disse er beskrevet som Resource Description Framework (<a href="https://www.w3.org/TR/rdf11-primer/">RDF</a>) triples i Turtle serialisering (<a href="https://www.w3.org/TR/turtle/">ttl</a>).
+                Andre serialiseringer som <a href="https://json-ld.org/">JSON-LD</a> eller <a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>
+                kunne også have været benyttet.</p>
+
+            <p>Kopier indholdet af en af ttl-filerne ind herunder eller benyt sample data.</p>
+
+            <button mat-stroked-button (click)="useSampleModelTriples()">Brug sample data</button>
+
+            <div fxFlex>
+                <codemirror [(ngModel)]="modelTriples"  [config]="cmTriples" class="full-width"></codemirror>
+            </div>
+
+        </mat-step>
+
+        <!-- STEP 2 -->
+        <mat-step>
+            <ng-template matStepLabel>Beskriv terminologi</ng-template>
+
+            <p>Model-triples er data fra den konkrete model, og i dette afsnit beskriver vi terminologilaget fra tilgængelige ontologier. 
+                Ontologierne fastlægger de termer der bruges til at beskrive datamodellen, og denne defineres ligeledes i <a href="https://www.w3.org/TR/rdf11-primer/">RDF</a>.</p>
+            
+            <p>Med RDF Skemaet (<a href="https://www.w3.org/TR/rdf-schema/">RDFS</a>) er det muligt at beskrive menneskeligt læsbare labels (rdfs:label) og beskrivelser (rdfs:comment) på forskellige sprog, og det er også muligt eksempelvis at beskrive hierakier af klasser og egenskaber.
+                Med Web Ontology Language (<a href="http://www.w3.org/TR/owl-primer">OWL</a>) er det muligt at beskrive endnu rigere logik såsom at to klasser er ens eller at en egenskab er funktionel (eksempelvis at en person kun kan have én biologisk mor).</p>
+
+            <p>Beskriv din egen terminologi, brug en fra nettet eller benyt sample data.</p>
+
+            <button mat-stroked-button (click)="useSampleOntologyTriples()">Brug sample data</button>
+
+            <div fxFlex>
+                <codemirror [(ngModel)]="ontologyTriples"  [config]="cmTriples" class="full-width"></codemirror>
+            </div>
+
+            <p>Denne service kommunikerer med en simpel <a herf="https://www.npmjs.com/package/hylar">HyLAR</a>-baseret service som kører på en lille virtuel maskine med begrænset kapacitet. 
+                Derfor understøttes større filer og kompleks inferens ikke. 
+                Benyt i stedet en triplestore som <a herf="http://graphdb.ontotext.com/">GraphDB</a> eller <a herf="https://www.stardog.com/">Stardog</a>.</p>
+
+        </mat-step>
+
+        <!-- STEP 3 -->
+        <mat-step [disableRipple]="!modelTriples || !ontologyTriples">
+            <ng-template matStepLabel>Nedarvet viden</ng-template>
+
+            <p>Ved mætning af datamodel forstås det at alle de informationer som ikke direkte er angivet i model-triples, men som indirekte er gældende på grund af de inferens-regler beskrevet i ontologien, bliver udledt.</p>
+
+            <p>Simple regler som nedenstående beskrives med terminologi fra RDF Skemaet (<a href="https://www.w3.org/TR/rdf-schema/">RDFS</a>). Eksempelvis:</p>
+        
+            <ul>
+                <li>Eksplicit model-triples: <code>&lt;A&gt; &lt;type&gt; &lt;bil&gt;</code></li>
+                <li>Eksplicit ontologi: <code>&lt;bil&gt; &lt;underklasse af&gt; &lt;køretøj&gt;</code></li>
+                <li>Afledt viden: <code>&lt;A&gt; &lt;type&gt; &lt;køretøj&gt;</code></li>
+            </ul>
+        
+            <ul>
+                <li>Eksplicit model-triples: <code>&lt;A&gt; &lt;lakfarve&gt; "rød"</code></li>
+                <li>Eksplicit ontologi: <code>&lt;lakfarve&gt; &lt;underegenskab af&gt; &lt;farve&gt;</code></li>
+                <li>Afledt viden: <code>&lt;A&gt; &lt;farve&gt; "rød"</code></li>
+            </ul>
+        
+            <p>Mere komplekse regler som nedenstående beskrives med terminologi fra Web Ontology Language (<a href="http://www.w3.org/TR/owl-primer">OWL</a>). Eksempelvis:</p>
+        
+            <ul>
+                <li>Eksplicit model-triples: <code>&lt;A&gt; &lt;type&gt; "rød"</code></li>
+                <li>Eksplicit ontologi: <code>&lt;lakfarve&gt; &lt;underegenskab af&gt; &lt;farve&gt;</code></li>
+                <li>Afledt viden: <code>&lt;A&gt; &lt;farve&gt; "rød"</code></li>
+            </ul>
+        
+            <!-- Server status -->
+            <div fxFlex>
+                <p class="error" *ngIf="serverAvailable === false">Kunne ikke oprette forbindelse til den server som konverterer IFC-filen. Kontakt support!</p>
+                <p class="success" *ngIf="serverAvailable === true">Server er tilgængelig</p>
+                <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
+            </div>
+
+            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
+        
+            <div *ngIf="implicitTriples">
+                <codemirror [(ngModel)]="implicitTriples"  [config]="cmTriples" class="full-width"></codemirror>
+
+                <p>Ovenstående er ikke den fuldkomne model, men de ting som en OWL reasoner vil aflede som implicit viden ud fra datamodellen og ontologien der er givet.</p>
+
+                <p>Hvis du bruger sample-datasættet vil du se at alle instanser af <code>ifc:IfcDoor</code> også bliver klassificeret som <code>ccs:QQC</code> og <code>ccs:QQx</code>.
+                    Derudover afledes åbenlyse ting som at <code>ccs:QQC</code> er en underklasse af og ens med sig selv, at <code>owl:Nothing</code> er en underklasse af det meste andet og at alting er en <code>owl:Thing</code>.</p>
+            </div>
+
+        </mat-step>
+
+    </mat-vertical-stepper>
+
+</div>

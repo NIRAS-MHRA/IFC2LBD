@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // ANGULAR MATERIAL (https://material.angular.io/)
 import {MatCardModule} from '@angular/material/card';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatButtonModule} from '@angular/material/button';
 
 // FX FLEX (https://github.com/angular/flex-layout/wiki/fxFlex-API)
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -17,17 +18,18 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 // NG2 CODEMIRROR (https://www.npmjs.com/package/ng2-codemirror)
 import { CodemirrorModule } from 'ng2-codemirror';
 
-// File saver module (https://www.npmjs.com/package/ngx-filesaver)
-import { FileSaverModule } from 'ngx-filesaver';
-
 // APP COMPONENTS
 import { AppComponent } from './app.component';
-import { IfcToLbdComponent } from 'src/app/stepper-pages/ifc-to-lbd/ifc-to-lbd.component';
+import { IfcToLbdComponent } from 'src/app/stepper-pages/1-ifc-to-lbd/ifc-to-lbd.component';
+import { SaturateModelComponent } from 'src/app/stepper-pages/2-saturate-model/saturate-model.component';
+import { ValidateModelComponent } from 'src/app/stepper-pages/3-validate-model/validate-model.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IfcToLbdComponent
+    IfcToLbdComponent,
+    SaturateModelComponent,
+    ValidateModelComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,7 @@ import { IfcToLbdComponent } from 'src/app/stepper-pages/ifc-to-lbd/ifc-to-lbd.c
     BrowserAnimationsModule,
     MatCardModule,
     MatStepperModule,
-    FileSaverModule,
+    MatButtonModule,
     FlexLayoutModule,
     NgxFileDropModule,
     CodemirrorModule
