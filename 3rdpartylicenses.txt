@@ -228,9 +228,6 @@ SOFTWARE.
 ngx-file-drop
 MIT
 
-ngx-filesaver
-MIT
-
 regenerator-runtime
 MIT
 MIT License
