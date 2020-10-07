@@ -1,0 +1,16 @@
+
+<!-- TURTLE -->
+<codemirror *ngIf="selectedSyntax == 'Turtle'" [(ngModel)]="turtle"  [config]="config" class="full-width"></codemirror>
+
+<!-- JSON-LD -->
+<codemirror *ngIf="selectedSyntax == 'JSON-LD'" [(ngModel)]="jsonld"  [config]="config" class="full-width"></codemirror>
+
+<mat-button-toggle-group appearance="legacy" name="syntax-select" aria-label="Syntax-select" class="full-width" [(ngModel)]="selectedSyntax" (change)="onSyntaxChange()">
+
+    <ng-container *ngFor="let item of syntaxOptions">
+
+        <mat-button-toggle class="btn-tgl-item" [value]="item">{{item}}</mat-button-toggle>
+
+    </ng-container>
+
+</mat-button-toggle-group>

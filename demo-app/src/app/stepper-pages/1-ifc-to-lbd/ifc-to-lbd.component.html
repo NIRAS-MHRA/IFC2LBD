@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
-    <p>Første step er at konvertere en IFC-fil over til såkaldte <i>triples</i> i <a href="https://www.w3.org/TR/rdf11-primer/">Resource Description Format (RDF)</a>.</p>
+    <p>Første step er at konvertere en IFC-fil over til såkaldte <i>triples</i> i <a href="https://www.w3.org/TR/rdf11-primer/">Resource Description Framework (RDF)</a>.</p>
     
     <p>En <i>triple</i> kaldes også en <i>erklæring</i> og består af et <i>subjekt</i>, et <i>prædikat</i> og et <i>objekt</i>. Subjektet er den ting, som erklæringen omhandler. 
         Prædikatet beskriver den relation eller egenskab som skal beskrives for subjektet, og objektet er værdien af relationen/egenskaben.<br>
@@ -9,7 +9,7 @@
         Efterhånden som vi definerer flere erklæringer får vi et helt netværk af informationer i hvad vi kalder en "knowledge graph"
     </p>
 
-    <p>Der benyttes en forsimplet konvertering af </p>
+    <p>Der benyttes en forsimplet konvertering af IFC-filen som NIRAS har bygget til formålet. Denne er baseret på <a href="http://ifcopenshell.org/">ifcopenshell</a>, og den udtrækker blot egenskaber på objekterne i projektet.</p>
 
     <!-- Server status -->
     <div fxFlex>
@@ -22,6 +22,7 @@
         <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
                 <span *ngIf="!fileLoadStatus && !fileLoadError">Smid IFC-fil her</span>
+                <span *ngIf="!fileLoadStatus && !fileLoadError" (click)="uploadDuplex()" class="clickable">&nbsp;eller <em>brug Duplex-model*</em></span>
                 <span *ngIf="fileLoadStatus && !fileLoadError" [innerHTML]="fileLoadStatus"></span>
                 <span class="error" *ngIf="fileLoadError">{{fileLoadError}}</span>
                 <!-- <button type="button" (click)="openFileSelector()">Browse Files</button> -->
@@ -29,9 +30,7 @@
         </ngx-file-drop>
     </div>
 
-    <!-- Codemirror -->
-    <div fxFlex  *ngIf="fileLoadResult">
-        <codemirror [(ngModel)]="fileLoadResult"  [config]="cmConfig" class="full-width"></codemirror>
-    </div>
+    <p>*Duplex house er en Coommon BIM-model udgivet af <a href="https://www.nibs.org/page/bsa_commonbimfiles">The National Institute of Building Sciences</a>.
+    </p>
 
 </div>

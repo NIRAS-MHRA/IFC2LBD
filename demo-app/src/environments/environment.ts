@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  ifcParseEndpoint: "http://51.15.95.164:3000/",
-  reasoningEndpoint: "http://51.15.95.164:3001/"
+  ifcParseEndpoint: "http://localhost:3000/",
+  reasoningEndpoint: "http://51.15.95.164:3001/",
+  shaclEndpoint: "http://localhost:3000/"
 };
 
 /*

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { SaturateModelService } from './saturate-model.service';
 import { ReasoningService } from 'src/app/services/reasoning.service';
+import { Globals } from 'src/app/services/globals';
 
 @Component({
     selector: 'app-saturate-model',
     templateUrl: './saturate-model.component.html',
     styleUrls: ['./saturate-model.component.css'],
-    providers: [ SaturateModelService , ReasoningService ]
+    providers: [ ReasoningService ]
 })
 export class SaturateModelComponent implements OnInit {
 
@@ -16,22 +16,24 @@ export class SaturateModelComponent implements OnInit {
 
     public serverAvailable: boolean = undefined;
 
-    // Codemirror
-    public cmTriples = { 
-        lineNumbers: true,
-        firstLineNumber: 1,
-        lineWrapping: true,
-        matchBrackets: true,
-        mode: 'text/turtle'
-    };
-
     constructor(
-        private _s: SaturateModelService,
-        private _rs: ReasoningService
+        private _rs: ReasoningService,
+        private _g: Globals
     ) { }
 
     async ngOnInit() {
         this.pingServer();
+        this.initObservables();
+    }
+
+    // Observe global model- and ontology triples
+    initObservables(){
+        this._g.getModelTriples().subscribe(triples => {
+            this.modelTriples = triples;
+        }, err => console.log(err));
+        this._g.getOntologyTriples().subscribe(triples => {
+            this.ontologyTriples = triples;
+        }, err => console.log(err));
     }
 
     // Ping the server to check if the service is available
@@ -45,11 +47,21 @@ export class SaturateModelComponent implements OnInit {
     }
 
     useSampleModelTriples(){
-        this.modelTriples = this._s.getSampleTriples();
+        this._g.useSampleModelTriples();
+    }
+
+    onModelTriplesChange(ev){
+        this.modelTriples = ev;
+        this._g.setModelTriples(ev);
     }
 
     useSampleOntologyTriples(){
-        this.ontologyTriples = this._s.getSampleOntology();
+        this._g.useSampleOntologyTriples();
+    }
+
+    onOntologyTriplesChange(ev){
+        this.ontologyTriples = ev;
+        this._g.setOntologyTriples(ev);
     }
 
     async saturateGraph(){

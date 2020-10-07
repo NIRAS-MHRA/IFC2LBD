@@ -9,6 +9,11 @@
         <img src="assets/logo-BS-small.svg" height="40px" />
         <img src="assets/logo-molio.png" height="40px" />
         <img src="assets/logo-niras.svg" height="52px" style="padding-bottom: 12px;" />
+        <span fxFlex="50px"></span>
+        <div fxLayout="column">
+          <span fxFlex style="font-size: 1.6em;">Linked Data</span>
+          <span fxFlex>til "automatiseret regelgraskning" af modeller</span>
+        </div>
       </div>
       <div fxFlex="grow" style="background-color: blue;"></div>
 
@@ -33,6 +38,11 @@
           <mat-step>
             <ng-template matStepLabel>Valider datamodel</ng-template>
             <app-validate-model></app-validate-model>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Avanceret SHACL</ng-template>
+            <app-advanced-shacl></app-advanced-shacl>
           </mat-step>
       
         </mat-horizontal-stepper>

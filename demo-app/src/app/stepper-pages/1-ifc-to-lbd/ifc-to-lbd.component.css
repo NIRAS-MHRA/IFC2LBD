@@ -1,3 +1,7 @@
-.full-width{
-    width: 100%;
+.clickable{
+    font-weight: 500;
+}
+.clickable:hover{
+    cursor: pointer;
+    font-weight: 600;
 }

@@ -24,7 +24,17 @@ export class ReasoningService {
     const url = urljoin(environment.reasoningEndpoint, 'saturate');
     // const url = urljoin('http://localhost:3001', 'saturate');
 
-    return this._http.post(url, {abox, tbox}, { responseType: 'text' }).toPromise();
+    const res = await this._http.post(url, {abox, tbox}, { responseType: 'text' }).toPromise();
+
+    // // Extract unique triples
+    // const lines = res.split("\n");
+
+    // // Filter out <xx> a owl:Thing and 
+    // const triples = lines
+    //                 .filter(l => !l.includes("a owl:Thing"))
+    //                 .join("\n");
+
+    return res;
 
   }
 

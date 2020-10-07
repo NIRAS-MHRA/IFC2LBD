@@ -1,0 +1,67 @@
+<div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
+
+    <!-- Intro -->
+    <p>Udover at bruges til validering kan SHACL også benyttes til at inferere viden. 
+        Det kræver <a href="https://www.w3.org/TR/shacl-af/">SHACL advanced features</a> som er på et eksperimentelt stade og altså ikke en W3C recommendation. 
+        Ikke desto mindre er det interessant at kigge på de muligheder det giver for inferens.</p>
+
+    <p>Denne demo kommunikerer med en server som benytter Python-biblioteket <a href="https://github.com/RDFLib/pySHACL">PySHACL</a> til validerings- og inferensprocessen.</p>
+
+    <mat-vertical-stepper linear="true" #stepper>
+
+        <!-- STEP 1 -->
+        <mat-step>
+            <ng-template matStepLabel>Avancerede SHACL shapes</ng-template>
+
+            <!-- Server status -->
+            <div fxFlex>
+                <p class="error" *ngIf="serverAvailable === false">Kunne ikke oprette forbindelse til den server som udfører SHACL-validering. Kontakt support!</p>
+                <p class="success" *ngIf="serverAvailable === true">Server er tilgængelig</p>
+                <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
+            </div>
+
+            <button mat-stroked-button class="full-width" (click)="useSampleSHACLAdvanced()">Brug sample data</button>
+            <triple-viewer [triples]="shaclAdvancedData"></triple-viewer>
+            <triple-viewer [triples]="shaclAdvancedShapes"></triple-viewer>
+
+            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
+
+            <ng-container *ngIf="report">
+
+                <p *ngIf="report.conforms">Datamodellen er <span class="success">valid</span> ift. de angivne SHACL shapes</p>
+                <p *ngIf="!report.conforms">Datamodellen er <span class="error">ikke valid</span> ift. de angivne SHACL shapes</p>
+
+                <ng-container *ngIf="report.implicit">
+                    Implicit viden:
+                    <triple-viewer [triples]="report.implicit"></triple-viewer>
+                </ng-container>
+
+                <ng-container *ngIf="!report.conforms">
+
+                    <p>Resultater:</p>
+                    <shacl-results [jsonld]="report.report"></shacl-results>
+
+                </ng-container>
+                
+            </ng-container>
+        
+            <!-- <div *ngIf="implicitTriples">
+                Valid? {{conforms}}
+
+                Rapport:
+                <triple-viewer [triples]="report"></triple-viewer>
+
+                Implicit viden:
+                <triple-viewer [triples]="implicitTriples"></triple-viewer>
+
+                <p>Ovenstående er ikke den fuldkomne model, men de ting som en OWL reasoner vil aflede som implicit viden ud fra datamodellen og ontologien der er givet.</p>
+
+                <p>Hvis du bruger sample-datasættet vil du se at alle instanser af <code>ifc:IfcDoor</code> også bliver klassificeret som <code>ccs:QQC</code> og <code>ccs:QQx</code>.
+                    Derudover afledes åbenlyse ting som at <code>ccs:QQC</code> er en underklasse af og ens med sig selv, at <code>owl:Nothing</code> er en underklasse af det meste andet og at alting er en <code>owl:Thing</code>.</p>
+            </div> -->
+
+        </mat-step>
+
+    </mat-vertical-stepper>
+
+</div>

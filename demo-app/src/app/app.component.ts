@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  isLinear: boolean = true;
+  isLinear: boolean = false;
   
 }

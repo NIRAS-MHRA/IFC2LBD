@@ -15,21 +15,27 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 // NGX FILE DROP (https://www.npmjs.com/package/ngx-file-drop)
 import { NgxFileDropModule } from 'ngx-file-drop';
 
-// NG2 CODEMIRROR (https://www.npmjs.com/package/ng2-codemirror)
-import { CodemirrorModule } from 'ng2-codemirror';
+// APP MODULES
+import { TripleViewerModule } from 'src/app/modules/triple-viewer.module';
+import { SHACLResultsModule } from './modules/shacl-results.module';
 
 // APP COMPONENTS
 import { AppComponent } from './app.component';
 import { IfcToLbdComponent } from 'src/app/stepper-pages/1-ifc-to-lbd/ifc-to-lbd.component';
 import { SaturateModelComponent } from 'src/app/stepper-pages/2-saturate-model/saturate-model.component';
 import { ValidateModelComponent } from 'src/app/stepper-pages/3-validate-model/validate-model.component';
+import { AdvancedSHACLComponent } from 'src/app/stepper-pages/4-advanced-shacl/advanced-shacl.component';
+
+// GLOBALS
+import { Globals } from 'src/app/services/globals';
 
 @NgModule({
   declarations: [
     AppComponent,
     IfcToLbdComponent,
     SaturateModelComponent,
-    ValidateModelComponent
+    ValidateModelComponent,
+    AdvancedSHACLComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +47,10 @@ import { ValidateModelComponent } from 'src/app/stepper-pages/3-validate-model/v
     MatButtonModule,
     FlexLayoutModule,
     NgxFileDropModule,
-    CodemirrorModule
+    TripleViewerModule,
+    SHACLResultsModule
   ],
-  providers: [],
+  providers: [Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

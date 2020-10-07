@@ -20,7 +20,6 @@ export class IfcToLbdComponent implements OnInit {
   // File drop
   public fileLoadStatus: string;
   public fileLoadError: string;
-  public fileLoadResult: string;
 
   // Codemirror
   public cmConfig = { 
@@ -69,7 +68,6 @@ export class IfcToLbdComponent implements OnInit {
     // Is it a file?
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-      console.log(fileEntry);
       fileEntry.file((file: File) => {
 
           // Evaluate size
@@ -92,6 +90,16 @@ export class IfcToLbdComponent implements OnInit {
           const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
           console.log(droppedFile.relativePath, fileEntry);
       }
+  }
+
+  public async uploadDuplex(){
+    try{
+      await this._ifcService.convertDuplex();
+      this.fileLoadStatus = `<br>Konvertering lykkedes!`;
+    }catch(err){
+      console.log(err);
+      this.fileLoadError = `Der skete en fejl på serveren`;
+    }
   }
 
   public async readFile(file: File, fileName) {

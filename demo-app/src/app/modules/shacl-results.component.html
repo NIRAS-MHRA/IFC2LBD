@@ -1,0 +1,22 @@
+<ng-container *ngIf="results">
+
+    <p><span class="error">{{results.length}}</span> overtrædelser</p>
+
+    <mat-card *ngFor="let item of results">
+        <mat-card-header>
+            <mat-card-title>
+                @id&nbsp;&nbsp;
+                <span *ngIf="item.resultSeverity" class="severity" [ngClass]="item.resultSeverity">{{item.resultSeverity}}</span>
+            </mat-card-title>
+            <mat-card-subtitle>{{item.focusNode}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-chip-list>
+                <mat-chip *ngFor="let msg of item.resultMessage" selectable="false">
+                    <span class="msg">{{msg["@value"]}}</span>&nbsp;&nbsp;<span class="lang">{{msg["@language"]}}</span>
+                </mat-chip>
+            </mat-chip-list>
+        </mat-card-content>
+    </mat-card>
+
+</ng-container>

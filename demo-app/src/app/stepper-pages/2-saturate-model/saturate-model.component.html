@@ -22,9 +22,7 @@
 
             <button mat-stroked-button (click)="useSampleModelTriples()">Brug sample data</button>
 
-            <div fxFlex>
-                <codemirror [(ngModel)]="modelTriples"  [config]="cmTriples" class="full-width"></codemirror>
-            </div>
+            <triple-viewer [triples]="modelTriples" (change)="onModelTriplesChange($event.target.value)"></triple-viewer>
 
         </mat-step>
 
@@ -42,9 +40,7 @@
 
             <button mat-stroked-button (click)="useSampleOntologyTriples()">Brug sample data</button>
 
-            <div fxFlex>
-                <codemirror [(ngModel)]="ontologyTriples"  [config]="cmTriples" class="full-width"></codemirror>
-            </div>
+            <triple-viewer [triples]="ontologyTriples" (change)="onOntologyTriplesChange($event.target.value)"></triple-viewer>
 
             <p>Denne service kommunikerer med en simpel <a herf="https://www.npmjs.com/package/hylar">HyLAR</a>-baseret service som kører på en lille virtuel maskine med begrænset kapacitet. 
                 Derfor understøttes større filer og kompleks inferens ikke. 
@@ -53,7 +49,8 @@
         </mat-step>
 
         <!-- STEP 3 -->
-        <mat-step [disableRipple]="!modelTriples || !ontologyTriples">
+        <!-- <mat-step [disableRipple]="!modelTriples || !ontologyTriples"> -->
+        <mat-step>
             <ng-template matStepLabel>Nedarvet viden</ng-template>
 
             <p>Ved mætning af datamodel forstås det at alle de informationer som ikke direkte er angivet i model-triples, men som indirekte er gældende på grund af de inferens-regler beskrevet i ontologien, bliver udledt.</p>
@@ -90,7 +87,7 @@
             <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
         
             <div *ngIf="implicitTriples">
-                <codemirror [(ngModel)]="implicitTriples"  [config]="cmTriples" class="full-width"></codemirror>
+                <triple-viewer [triples]="implicitTriples"></triple-viewer>
 
                 <p>Ovenstående er ikke den fuldkomne model, men de ting som en OWL reasoner vil aflede som implicit viden ud fra datamodellen og ontologien der er givet.</p>
 

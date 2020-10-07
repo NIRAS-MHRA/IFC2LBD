@@ -1,0 +1,35 @@
+.lang{
+    font-weight: 500;
+}
+.msg{
+    font-weight: 300;
+}
+.severity{
+    font-weight: 300;
+    font-size: 14px;
+    padding: 5px;
+    background-color: #e0e0e0;
+    color: rgba(0,0,0,.87);
+    border-radius: 2px;
+}
+mat-card{
+    margin-bottom: 10px;
+}
+mat-chip-list{
+    margin-left: 50px;
+}
+.Info{
+    background-color: rgba(100, 255, 100, 0.3);
+}
+.Warning{
+    background-color: rgba(255, 255, 100, 0.3);
+}
+.Violation{
+    background-color: rgba(255, 100, 100, 0.3);
+}
+
+/* VIOLATIONS
+sh:Info	            A non-critical constraint violation indicating an informative message.
+sh:Warning	        A non-critical constraint violation indicating a warning.
+sh:Violation	    A constraint violation. 
+*/

@@ -1,5 +1,62 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
-    xx
+    <!-- Intro -->
+    <p>Shapes Constraint Language (SHACL) </p>
+
+    <p>Denne demo kommunikerer med en server som benytter Python-biblioteket <a href="https://github.com/RDFLib/pySHACL">PySHACL</a> til validerings- og inferensprocessen.</p>
+
+    <span class="error" *ngIf="!abox">Der er ikke angivet en datamodel. Gå til step 2 og angiv en datamodel!</span>
+
+    <mat-vertical-stepper linear="true" #stepper>
+        
+        <!-- STEP 1 -->
+        <mat-step>
+            <ng-template matStepLabel>Definer SHACL shapes</ng-template>
+
+            <button mat-stroked-button (click)="useSampleShapes()">Brug sample data</button>
+            <triple-viewer [triples]="shapes"></triple-viewer>
+
+        </mat-step>
+
+        <!-- STEP 2 -->
+        <mat-step>
+            <ng-template matStepLabel>Valider datamodel</ng-template>
+
+            <!-- Server status -->
+            <div fxFlex>
+                <p class="error" *ngIf="serverAvailable === false">Kunne ikke oprette forbindelse til den server som udfører SHACL-validering. Kontakt support!</p>
+                <p class="success" *ngIf="serverAvailable === true">Server er tilgængelig</p>
+                <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="10px">
+                <button class="full-width" mat-stroked-button (click)="onValidate()" [disabled]="!serverAvailable || !abox || !shapes">Valider oprindelig datamodel</button>
+                <button class="full-width" mat-stroked-button (click)="onValidateSaturated()" [disabled]="!serverAvailable || !abox || !shapes || !tbox">Valider mættet datamodel</button>
+            </div>
+
+            <p class="error" *ngIf="!abox">Der er ikke angivet en datamodel. Gå til step 2 og angiv en datamodel!</p>
+            <p class="error" *ngIf="!shapes">Der er ikke angivet nogen SHACL shapes!</p>
+            <p class="error" *ngIf="!tbox">Der er ikke angivet nogen terminologi til at mætte datamodellen. Gå til step 2 og angiv terminologi!</p>
+            
+            <ng-container *ngIf="report">
+
+                <p *ngIf="report.conforms">Datamodellen er <span class="success">valid</span> ift. de angivne SHACL shapes</p>
+                <p *ngIf="!report.conforms">Datamodellen er <span class="error">ikke valid</span> ift. de angivne SHACL shapes</p>
+
+                <p>SHACL-rapport:</p>
+                <triple-viewer [triples]="report.report"></triple-viewer>
+
+                <ng-container *ngIf="!report.conforms">
+
+                    <p>Resultater:</p>
+                    <shacl-results [ttl]="report.report"></shacl-results>
+
+                </ng-container>
+                
+            </ng-container>
+
+        </mat-step>
+
+    </mat-vertical-stepper>
 
 </div>
