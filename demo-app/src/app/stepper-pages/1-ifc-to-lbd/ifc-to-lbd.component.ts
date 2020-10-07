@@ -46,6 +46,7 @@ export class IfcToLbdComponent implements OnInit {
       await this._ifcService.ping();
       this.serverAvailable = true;
     }catch(error){
+      this.serverAvailable = false;
       console.log(error);
     }
   }

@@ -19,6 +19,8 @@ export class AdvancedSHACLComponent implements OnInit {
     public conforms: boolean = undefined;
     public report: Report;
 
+    public error = "";
+
     constructor(
         private _s: AdvancedSHACLService,
         private _ss: SHACLService
@@ -34,12 +36,16 @@ export class AdvancedSHACLComponent implements OnInit {
             await this._ss.pingServer();
             this.serverAvailable = true;
         }catch(error){
+            this.serverAvailable = false;
             console.log(error);
         }
     }
 
-    useSampleSHACLAdvanced(){
+    useSampleData(){
         this.shaclAdvancedData = this._s.getSampleData();
+    }
+
+    useSampleShapes(){
         this.shaclAdvancedShapes = this._s.getSampleShapes();
     }
 
@@ -47,6 +53,7 @@ export class AdvancedSHACLComponent implements OnInit {
         try{
             this.report = await this._ss.saturateGraph(this.shaclAdvancedData, this.shaclAdvancedShapes);
         }catch(e){
+            this.error = e;
             console.log(e);
         }
     }

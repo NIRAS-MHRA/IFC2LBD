@@ -19,6 +19,8 @@ export class ValidateModelComponent implements OnInit {
     public conforms: boolean = undefined;
     public report: Report;
 
+    public error = "";
+
     constructor(
         private _s: ValidateModelService,
         private _ss: SHACLService,
@@ -46,6 +48,7 @@ export class ValidateModelComponent implements OnInit {
             await this._ss.pingServer();
             this.serverAvailable = true;
         }catch(error){
+            this.serverAvailable = false;
             console.log(error);
         }
     }
@@ -58,6 +61,7 @@ export class ValidateModelComponent implements OnInit {
         try{
             this.report = await this._ss.validate(this.abox, this.shapes);
         }catch(err){
+            this.error = err;
             console.log(err);
         }
     }
@@ -66,6 +70,7 @@ export class ValidateModelComponent implements OnInit {
         try{
             this.report = await this._ss.validate(this.abox, this.shapes, this.tbox);
         }catch(err){
+            this.error = err;
             console.log(err);
         }
     }

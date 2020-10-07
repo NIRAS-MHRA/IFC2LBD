@@ -16,6 +16,8 @@ export class SaturateModelComponent implements OnInit {
 
     public serverAvailable: boolean = undefined;
 
+    public error = "";
+
     constructor(
         private _rs: ReasoningService,
         private _g: Globals
@@ -42,6 +44,7 @@ export class SaturateModelComponent implements OnInit {
             await this._rs.ping();
             this.serverAvailable = true;
         }catch(error){
+            this.serverAvailable = false;
             console.log(error);
         }
     }
@@ -69,6 +72,7 @@ export class SaturateModelComponent implements OnInit {
             this.implicitTriples = await this._rs.saturateGraph(this.modelTriples, this.ontologyTriples);
             console.log(this.implicitTriples);
         }catch(e){
+            this.error = e;
             console.log(e);
         }
     }

@@ -11,7 +11,25 @@
 
         <!-- STEP 1 -->
         <mat-step>
-            <ng-template matStepLabel>Avancerede SHACL shapes</ng-template>
+            <ng-template matStepLabel>Angiv datamodel</ng-template>
+
+            <button mat-stroked-button class="full-width" (click)="useSampleData()">Brug sample data</button>
+            <triple-viewer [triples]="shaclAdvancedData"></triple-viewer>
+
+        </mat-step>
+
+        <!-- STEP 2 -->
+        <mat-step>
+            <ng-template matStepLabel>Angiv SHACL shapes</ng-template>
+
+            <button mat-stroked-button class="full-width" (click)="useSampleShapes()">Brug sample data</button>
+            <triple-viewer [triples]="shaclAdvancedShapes"></triple-viewer>
+
+        </mat-step>
+
+        <!-- STEP 3 -->
+        <mat-step>
+            <ng-template matStepLabel>Valider</ng-template>
 
             <!-- Server status -->
             <div fxFlex>
@@ -20,16 +38,16 @@
                 <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
             </div>
 
-            <button mat-stroked-button class="full-width" (click)="useSampleSHACLAdvanced()">Brug sample data</button>
-            <triple-viewer [triples]="shaclAdvancedData"></triple-viewer>
-            <triple-viewer [triples]="shaclAdvancedShapes"></triple-viewer>
+            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable || !shaclAdvancedData || !shaclAdvancedData">"Mæt" datamodel</button>
 
-            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
+            <p class="error" *ngIf="!shaclAdvancedData">Der er ikke angivet en datamodel. Gå til step 2 og angiv en datamodel!</p>
 
             <ng-container *ngIf="report">
 
                 <p *ngIf="report.conforms">Datamodellen er <span class="success">valid</span> ift. de angivne SHACL shapes</p>
                 <p *ngIf="!report.conforms">Datamodellen er <span class="error">ikke valid</span> ift. de angivne SHACL shapes</p>
+
+                <p *ngIf="error" class="error">{{error | json}}</p>
 
                 <ng-container *ngIf="report.implicit">
                     Implicit viden:
@@ -44,21 +62,6 @@
                 </ng-container>
                 
             </ng-container>
-        
-            <!-- <div *ngIf="implicitTriples">
-                Valid? {{conforms}}
-
-                Rapport:
-                <triple-viewer [triples]="report"></triple-viewer>
-
-                Implicit viden:
-                <triple-viewer [triples]="implicitTriples"></triple-viewer>
-
-                <p>Ovenstående er ikke den fuldkomne model, men de ting som en OWL reasoner vil aflede som implicit viden ud fra datamodellen og ontologien der er givet.</p>
-
-                <p>Hvis du bruger sample-datasættet vil du se at alle instanser af <code>ifc:IfcDoor</code> også bliver klassificeret som <code>ccs:QQC</code> og <code>ccs:QQx</code>.
-                    Derudover afledes åbenlyse ting som at <code>ccs:QQC</code> er en underklasse af og ens med sig selv, at <code>owl:Nothing</code> er en underklasse af det meste andet og at alting er en <code>owl:Thing</code>.</p>
-            </div> -->
 
         </mat-step>
 

@@ -2,11 +2,17 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// export const environment = {
+//   production: false,
+//   ifcParseEndpoint: "http://localhost:3000/",
+//   reasoningEndpoint: "http://51.15.95.164:3001/",
+//   shaclEndpoint: "http://localhost:3000/"
+// };
 export const environment = {
-  production: false,
-  ifcParseEndpoint: "http://localhost:3000/",
-  reasoningEndpoint: "http://51.15.95.164:3001/",
-  shaclEndpoint: "http://localhost:3000/"
+  production: true,
+  ifcParseEndpoint: "https://niras-ifc-parser.azurewebsites.net/",
+  reasoningEndpoint: "https://niras-reasoning-api.azurewebsites.net/",
+  shaclEndpoint: "https://niras-shacl-api.azurewebsites.net/"
 };
 
 /*

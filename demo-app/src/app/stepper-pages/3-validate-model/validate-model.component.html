@@ -34,6 +34,8 @@
                 <button class="full-width" mat-stroked-button (click)="onValidateSaturated()" [disabled]="!serverAvailable || !abox || !shapes || !tbox">Valider mættet datamodel</button>
             </div>
 
+            <p *ngIf="error" class="error">{{error | json}}</p>
+
             <p class="error" *ngIf="!abox">Der er ikke angivet en datamodel. Gå til step 2 og angiv en datamodel!</p>
             <p class="error" *ngIf="!shapes">Der er ikke angivet nogen SHACL shapes!</p>
             <p class="error" *ngIf="!tbox">Der er ikke angivet nogen terminologi til at mætte datamodellen. Gå til step 2 og angiv terminologi!</p>

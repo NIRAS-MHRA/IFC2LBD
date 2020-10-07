@@ -85,6 +85,8 @@
             </div>
 
             <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
+
+            <p *ngIf="error" class="error">{{error | json}}</p>
         
             <div *ngIf="implicitTriples">
                 <triple-viewer [triples]="implicitTriples"></triple-viewer>
