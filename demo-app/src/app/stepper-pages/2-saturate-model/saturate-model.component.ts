@@ -68,6 +68,7 @@ export class SaturateModelComponent implements OnInit {
     }
 
     async saturateGraph(){
+        this.error = "";
         try{
             this.implicitTriples = await this._rs.saturateGraph(this.modelTriples, this.ontologyTriples);
             console.log(this.implicitTriples);

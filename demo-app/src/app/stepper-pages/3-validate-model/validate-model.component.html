@@ -1,9 +1,16 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
-    <!-- Intro -->
-    <p>Shapes Constraint Language (SHACL) </p>
+    <h1>Introduktion</h1>
+    <p>I step nummer tre vil vi validere indholdet af datamodellen. Formålet er at demonstrere hvordan <em>automatiseret regelgranskning</em> kan foregå med allerede eksisterende, åbne standarder.</p>
 
-    <p>Denne demo kommunikerer med en server som benytter Python-biblioteket <a href="https://github.com/RDFLib/pySHACL">PySHACL</a> til validerings- og inferensprocessen.</p>
+    <p>Valideringen udføres ud fra regler beskrevet i Shapes Constraint Language (<a href="https://www.w3.org/TR/shacl/">SHACL</a>), som siden 2017 har haft status som W3C Recommendation. Altså er det en webstandard.</p>
+
+    <p>I et regelgranskningssetup forestiller vi os en granskningsproces i to steps:</p>
+
+    <ol>
+        <li>Prægranskning: Indeholder modellen de forventede informationer (eksempelvis: har alle døre en bredde?)</li>
+        <li>Granskning: Er informationerne inden for rammerne af hvad der er tilladt (eksempelvis: er adgangsdøre til WC-rum bredde nok til at en kørestolsbruger kan passere?)</li>
+    </ol>
 
     <span class="error" *ngIf="!abox">Der er ikke angivet en datamodel. Gå til step 2 og angiv en datamodel!</span>
 
@@ -13,7 +20,7 @@
         <mat-step>
             <ng-template matStepLabel>Definer SHACL shapes</ng-template>
 
-            <button mat-stroked-button (click)="useSampleShapes()">Brug sample data</button>
+            <button mat-stroked-button (click)="useSampleShapes()" class="full-width">Brug sample data</button>
             <triple-viewer [triples]="shapes"></triple-viewer>
 
         </mat-step>
@@ -21,6 +28,8 @@
         <!-- STEP 2 -->
         <mat-step>
             <ng-template matStepLabel>Valider datamodel</ng-template>
+
+            <p>Denne demo kommunikerer med en server som benytter Python-biblioteket <a href="https://github.com/RDFLib/pySHACL">PySHACL</a> til validerings- og inferensprocessen.</p>
 
             <!-- Server status -->
             <div fxFlex>

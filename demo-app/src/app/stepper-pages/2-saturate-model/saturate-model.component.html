@@ -1,9 +1,15 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
     <!-- Intro -->
-    <p>Step nummer to er at mætte datamodellen. Vi har en datamodel der er klassificeret med IFC, men vi ønsker at kunne lave forespørgsler på den med <a href="https://molio.dk/produkter/digitale-vaerktojer/gratis-vaerktojer/ccs-cuneco-classification-system/">Cuneco Classification System (CSS)</a>.
-        Heldigvis findes CCS som en ontologi der er aligned med IFC.
-    </p>
+    <h1>Introduktion</h1>
+    <p>I step nummer to demonstrerer vi hvordan datamodellen mættes.</p>
+    
+    <p>Ved mætning forstås at vi har noget maskinlæsbar viden som vi giver computeren sådan at den kan udlede det der "står mellem linjerne". Den udleder altså noget implicit viden ud fra hvad vi eksplicit har fortalt den.</p>
+
+    <h1>Casen</h1>
+    <p>Vi har en datamodel der er klassificeret med IFC, men vi ønsker at kunne lave forespørgsler på den med Cuneco Classification System (<a href="https://molio.dk/produkter/digitale-vaerktojer/gratis-vaerktojer/ccs-cuneco-classification-system/">CSS</a>).</p>
+
+    <p>Førend det er muligt, er der behov for en ontologi der beskriver alignments mellem IFC og CCS. Sådan en er endnu ikke offentligt tilgængelig, men med dette eksempel, demonstrerer vi princippet.</p>
 
     <mat-vertical-stepper linear="true" #stepper>
 
@@ -11,14 +17,12 @@
         <mat-step>
             <ng-template matStepLabel>Definer model-triples</ng-template>
 
-            <p>Model-triples er de triples der blev genereret ud fra IFC-filen.
-                Zip-filen indeholder en fil for hver IFC-klasse i modellen (eksempelvis IfcDoor),
-                og hver af disse filer indeholder erklæringer om de instanser fra modellen der tilhører denne klasse.
-                Disse er beskrevet som Resource Description Framework (<a href="https://www.w3.org/TR/rdf11-primer/">RDF</a>) triples i Turtle serialisering (<a href="https://www.w3.org/TR/turtle/">ttl</a>).
-                Andre serialiseringer som <a href="https://json-ld.org/">JSON-LD</a> eller <a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>
-                kunne også have været benyttet.</p>
+            <p>Model-triples er de triples der blev genereret ud fra IFC-filen.</p>
+            
+            <p>Zip-filen indeholder en fil for hver IFC-klasse i modellen (eksempelvis IfcDoor),
+                og hver af disse filer indeholder triples der beskriver de instanser fra modellen, der tilhører denne klasse.</p>
 
-            <p>Kopier indholdet af en af ttl-filerne ind herunder eller benyt sample data.</p>
+            <p>Kopier indholdet af en af ttl-filerne ind herunder eller benyt sample data som indeholder alle instanser af IfcDoor fra Duplex-modellen.</p>
 
             <button mat-stroked-button (click)="useSampleModelTriples()">Brug sample data</button>
 
@@ -30,11 +34,13 @@
         <mat-step>
             <ng-template matStepLabel>Beskriv terminologi</ng-template>
 
-            <p>Model-triples er data fra den konkrete model, og i dette afsnit beskriver vi terminologilaget fra tilgængelige ontologier. 
-                Ontologierne fastlægger de termer der bruges til at beskrive datamodellen, og denne defineres ligeledes i <a href="https://www.w3.org/TR/rdf11-primer/">RDF</a>.</p>
+            <p>I dette afsnit beskriver vi terminologilaget fra tilgængelige ontologier.</p>
+
+            <p>En ontologi er i dette tilfælde en <em>maskinlæsbar beskrivelse af logiske regler</em>, og denne beskrives også i RDF triples ved brug af ontologierne RDF Skemaet (<a href="https://www.w3.org/TR/rdf-schema/">RDFS</a>) og Web Ontology Language (<a href="http://www.w3.org/TR/owl-primer">OWL</a>).</p>
             
-            <p>Med RDF Skemaet (<a href="https://www.w3.org/TR/rdf-schema/">RDFS</a>) er det muligt at beskrive menneskeligt læsbare labels (rdfs:label) og beskrivelser (rdfs:comment) på forskellige sprog, og det er også muligt eksempelvis at beskrive hierakier af klasser og egenskaber.
-                Med Web Ontology Language (<a href="http://www.w3.org/TR/owl-primer">OWL</a>) er det muligt at beskrive endnu rigere logik såsom at to klasser er ens eller at en egenskab er funktionel (eksempelvis at en person kun kan have én biologisk mor).</p>
+            <p>Med <em>RDFS</em> er det muligt at beskrive menneskeligt læsbare labels (rdfs:label) og beskrivelser (rdfs:comment) på forskellige sprog, og det er også muligt eksempelvis at beskrive hierakier af klasser og egenskaber.</p>
+
+            <p>Med <em>OWL</em> er det muligt at beskrive endnu rigere logik såsom at to klasser er ens eller at en egenskab er funktionel (eksempelvis at en person kun kan have én biologisk mor). Sidstnævnte vil ikke melde fejl hvis en person har to mødre, men den vil udlede at de to mødre altså må være samme person. Dette skyldes at OWL bygger på en Open World Assumption.</p>
 
             <p>Beskriv din egen terminologi, brug en fra nettet eller benyt sample data.</p>
 
@@ -84,7 +90,11 @@
                 <p *ngIf="serverAvailable === undefined">Opretter forbindelse til server...</p>
             </div>
 
-            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable">"Mæt" datamodel</button>
+            <button mat-stroked-button (click)="saturateGraph()" [disabled]="!serverAvailable || !modelTriples || !ontologyTriples">"Mæt" datamodel</button>
+
+            <p class="error" *ngIf="!modelTriples">Der er ikke angivet en datamodel. Gå til "definer model-triples"!</p>
+            <p class="error" *ngIf="!ontologyTriples">Der er ikke angivet nogen terminologi. Gå til "beskriv terminologi"!</p>
+
 
             <p *ngIf="error" class="error">{{error | json}}</p>
         

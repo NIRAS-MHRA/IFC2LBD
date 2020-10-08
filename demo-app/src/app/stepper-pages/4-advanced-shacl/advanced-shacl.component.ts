@@ -50,6 +50,7 @@ export class AdvancedSHACLComponent implements OnInit {
     }
 
     async saturateGraph(){
+        this.error = "";
         try{
             this.report = await this._ss.saturateGraph(this.shaclAdvancedData, this.shaclAdvancedShapes);
         }catch(e){

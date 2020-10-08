@@ -16,10 +16,11 @@ import 'codemirror/mode/sparql/sparql';
 export class IfcToLbdComponent implements OnInit {
 
   public serverAvailable: boolean = undefined;
+  public success: boolean;
 
   // File drop
-  public fileLoadStatus: string;
-  public fileLoadError: string;
+  public fileLoadStatus: string = "";
+  public fileLoadError: string = "";
 
   // Codemirror
   public cmConfig = { 
@@ -53,6 +54,8 @@ export class IfcToLbdComponent implements OnInit {
 
   // Fires when a file is dropped
   public dropped(files: NgxFileDropEntry[]) {
+
+    this.success = undefined;
 
     this.fileLoadStatus = null;
     this.fileLoadError = null;
@@ -94,9 +97,12 @@ export class IfcToLbdComponent implements OnInit {
   }
 
   public async uploadDuplex(){
+    this.success = undefined;
+    this.fileLoadStatus = `Sender filen til server...`;
     try{
       await this._ifcService.convertDuplex();
-      this.fileLoadStatus = `<br>Konvertering lykkedes!`;
+      this.fileLoadStatus += `<br>Konvertering lykkedes!`;
+      this.success = true;
     }catch(err){
       console.log(err);
       this.fileLoadError = `Der skete en fejl på serveren`;
@@ -110,6 +116,7 @@ export class IfcToLbdComponent implements OnInit {
     try{
       await this._ifcService.convertIFC(fileName, file);
       this.fileLoadStatus += `<br>Konvertering lykkedes!`;
+      this.success = true;
     }catch(error){
       console.log(error);
       this.fileLoadError = `Der skete en fejl på serveren`;

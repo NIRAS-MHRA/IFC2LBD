@@ -15,11 +15,52 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .full-width{
     width: 100%;
 }
-p{
-    font-size: 0.95em;
+p, li{
+    font-size: 1.1em;
+}
+h1{
+    font-weight: 500;
+}
+li{
+    padding-bottom: 0.3em;
+}
+em{
+    font-weight: 500;
+}
+a{
+    font-weight: 500;
+    color: rgb(0, 97, 114);
+    text-decoration: none;
+}
+a:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.code-box{
+    border: 1px solid rgba(240, 240, 240, 0.8);
+    font-weight: 300;
+    font-family: consolas;
+    background-color: rgba(240, 240, 240, 0.5);
+    border-radius: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+/* Stepper */
+.mat-step-icon-selected{
+    background-color: rgb(0, 97, 114) !important;
+}
+.mat-step-icon-state-edit{
+    background-color: rgb(0, 97, 114) !important;
+}
+.mat-step-icon-state-done{
+    background-color: rgb(0, 97, 114) !important;
 }
 
 code{
+    font-weight: 300;
     font-family: consolas;
     background-color: rgba(240, 240, 240, 0.5);
     border-radius: 0.5em;

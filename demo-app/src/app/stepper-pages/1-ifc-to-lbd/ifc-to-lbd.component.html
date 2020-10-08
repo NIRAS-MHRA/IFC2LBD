@@ -1,15 +1,55 @@
 <div fxLayout="column" fxLayoutGap="10px" style="width: 100%">
 
-    <p>Første step er at konvertere en IFC-fil over til såkaldte <i>triples</i> i <a href="https://www.w3.org/TR/rdf11-primer/">Resource Description Framework (RDF)</a>.</p>
-    
-    <p>En <i>triple</i> kaldes også en <i>erklæring</i> og består af et <i>subjekt</i>, et <i>prædikat</i> og et <i>objekt</i>. Subjektet er den ting, som erklæringen omhandler. 
-        Prædikatet beskriver den relation eller egenskab som skal beskrives for subjektet, og objektet er værdien af relationen/egenskaben.<br>
-        Eksempelvis <code>&lt;x&gt; &lt;type&gt; &lt;Rum&gt;</code>, som beskriver at <code>&lt;x&gt;</code> er af typen <code>&lt;Rum&gt;</code>.<br>
-        Der kan knyttes flere prædikater til det samme subjekt. For eksempel kan vi med <code>&lt;x&gt; &lt;nummer&gt; "25"</code> beskrive at <code>&lt;x&gt;</code> har nummer 25.<br>
-        Efterhånden som vi definerer flere erklæringer får vi et helt netværk af informationer i hvad vi kalder en "knowledge graph"
-    </p>
+    <h1>Introduktion</h1>
 
-    <p>Der benyttes en forsimplet konvertering af IFC-filen som NIRAS har bygget til formålet. Denne er baseret på <a href="http://ifcopenshell.org/">ifcopenshell</a>, og den udtrækker blot egenskaber på objekterne i projektet.</p>
+    <p>Første step er at konvertere en IFC-fil over til såkaldte <em>triples</em> i den datamodel der kaldes Resource Description Framework (<a href="https://www.w3.org/TR/rdf11-primer/">RDF</a>).</p>
+    
+    <p>En <em>triple</em> kaldes også en <em>erklæring</em> og består af et <em>subjekt</em>, et <em>prædikat</em> og et <em>objekt</em>.</p>
+    
+    <p><em>Subjektet</em> i en triple er den ting, som erklæringen omhandler.</p>
+    
+    <p><em>Prædikatet</em> i en triple beskriver den relation eller egenskab som skal beskrives for subjektet</p>
+    
+    <p><em>objektet</em> er værdien af relationen/egenskaben.</p>
+
+    <p>Objektet af en triple kan være subjektet af en anden triples, og således begynder helheden at formes som et netværk eller en graf eller mere populært en "knowledge graph".</p>
+
+    <p>Eksempel på triples:</p>
+
+    <div class="code-box">
+        &lt;x&gt; &lt;type&gt; &lt;Rum&gt; .<br>
+        &lt;x&gt; &lt;areal&gt; &lt;"20.2 m2" .&gt; .
+    </div>
+    
+    <p>Eksemplet indeholder to triples. Den ene fortæller at <code>&lt;x&gt;</code> er af typen <code>&lt;Rum&gt;</code> og den anden at <code>&lt;x&gt;</code> har et areal på <code>"20 m2"</code>.</p>
+    
+    <p>For at vi kan tale om rigitg <em>Linked Data</em> er der behov for lidt mere. Følgende <a href="https://www.w3.org/DesignIssues/LinkedData.html">4 principper</a> skal være opfyldt før vi har Linked Data:</p>
+
+    <ol>
+        <li>Brug en URI (Uniform Resource Identifier) som entydig identifikator for en ting</li>
+        <li>Brug HTTP URIer (webadresser) til de entydige identifikatorer så der kan linkes til tingen og så den kan slås op i en browser (hvis man har adgangsrettigheder)</li>
+        <li>Tilbyd yderligere information om tingen i et standardiseret format når URI-linket forfølges</li>
+        <li>Suppler informationen med links til relaterede URIer</li>
+    </ol>
+
+    <p>Formålet med denne side er ikke at give en fyldestgørende introduktion til emnet, men ovenstående skulle klæde dig på til overordnet at forstå de grundlæggende principper.</p>
+    
+    <p>En sidste relevant information er at RDF ikke er et filformat men altså en datamodel. 
+        Ofte udveksles RDF i formatet Turtle (<a href="https://www.w3.org/TR/turtle/">ttl</a>), 
+        og konverteringen fra IFC giver også filer i dette format. Øvrige udbredte formater er <a href="https://www.w3.org/TR/json-ld11/">JSON-LD</a>, 
+        <a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> og den helt simple <a href="https://www.w3.org/TR/n-triples/">N-Triples</a>. 
+        Der findes <a href="https://www.easyrdf.org/converter">online værktøjer</a> og open source biblioteker til konvertering mellem disse formater.
+    </p>
+    
+    <h1>Konvertering fra IFC</h1>
+
+    <p>Der findes en version af IFC som beskrives i webontologisproget <a href="https://www.w3.org/TR/owl2-primer/">OWL</a> kaldet <a href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">ifcOWL</a>.</p>
+
+    <p>ifcOWL er kommet af en direkte konvertering fra EXPRESS/STEP versionen, og derfor indeholder den en del legacy. I forskningen argumenteres der ofte for at den ikke er intuitiv, web-parat og i det hele taget hensigtsmæssig, og den ser primært ud som den gør for at understøtte bagudkompatibilitet. Vi skal ikke gå dybere ned ad denne diskussion, men summa summarum er at denne konvertering fra IFC altså ikke konverterer til ifcOWL.</p>
+
+    <p>Der benyttes en forsimplet konvertering af IFC-filen som <a href="https://www.niras.dk/">NIRAS</a> har bygget til formålet. Denne er baseret på <a href="http://ifcopenshell.org/">ifcopenshell</a>, og den udtrækker blot de egenskaber der eksisterer på objekterne i projektet.</p>
+
+    <p>Der findes også en <a href="https://github.com/pipauwel/IFCtoRDF">IFC->ifcOWL converter</a> af Pieter Pauwels og en <a href="https://github.com/jyrkioraskari/IFCtoLBD">IFC->LBD converter</a> af Jyrki Oraskari. Sidstnævnte konverterer til nogle simplere, web-parate skemaer som understøttes af <a href="https://www.w3.org/community/lbd/">W3C Linked Building Data community group</a></p>
 
     <!-- Server status -->
     <div fxFlex>
@@ -22,13 +62,23 @@
         <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
                 <span *ngIf="!fileLoadStatus && !fileLoadError">Smid IFC-fil her</span>
-                <span *ngIf="!fileLoadStatus && !fileLoadError" (click)="uploadDuplex()" class="clickable">&nbsp;eller <em>brug Duplex-model*</em></span>
+                <span *ngIf="!fileLoadStatus && !fileLoadError" (click)="uploadDuplex()">&nbsp;eller <em class="clickable">brug Duplex-model*</em></span>
                 <span *ngIf="fileLoadStatus && !fileLoadError" [innerHTML]="fileLoadStatus"></span>
                 <span class="error" *ngIf="fileLoadError">{{fileLoadError}}</span>
                 <!-- <button type="button" (click)="openFileSelector()">Browse Files</button> -->
             </ng-template>
         </ngx-file-drop>
     </div>
+
+    <ng-container *ngIf="success">
+        <h1>Resultater</h1>
+
+        <p>Du har nu modtaget en zip-fil med et sæt filer. Hver filer indeholder RDF-triples der klassificerer instanser af en klasse og beskriver simple egenskaber som var angivet i IFC-filen. Der er ikke udtrukket relationer som dem mellem rum/etage, rum/bygningsdele mv. da det ikke har været er fokusområde for denne guide. Da alle instanser identificeres med deres IFC GUID er det dog muligt at benytte en anden converter der genererer disse triples og efterfølgende se dem sammen i én knowledge graph.</p>
+
+        <p>Prøv eventuelt at lave nogle simple queries på datasættet i <a href="https://madsholten.github.io/sparql-visualizer/">SPARQL-visualizer</a>.</p>
+
+    </ng-container>
+    
 
     <p>*Duplex house er en Coommon BIM-model udgivet af <a href="https://www.nibs.org/page/bsa_commonbimfiles">The National Institute of Building Sciences</a>.
     </p>

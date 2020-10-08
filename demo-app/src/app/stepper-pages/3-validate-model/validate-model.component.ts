@@ -58,6 +58,7 @@ export class ValidateModelComponent implements OnInit {
     }
 
     async onValidate(){
+        this.error = "";
         try{
             this.report = await this._ss.validate(this.abox, this.shapes);
         }catch(err){
@@ -67,6 +68,7 @@ export class ValidateModelComponent implements OnInit {
     }
 
     async onValidateSaturated(){
+        this.error = "";
         try{
             this.report = await this._ss.validate(this.abox, this.shapes, this.tbox);
         }catch(err){
